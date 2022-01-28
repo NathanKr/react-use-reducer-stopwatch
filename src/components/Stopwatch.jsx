@@ -7,10 +7,9 @@ const Stopwatch = () => {
     tics: 0,
   });
 
-  useEffect(() => {
+  useEffect(incrementHandler, [state.isRunning]);
+  function incrementHandler() {
     if (!state.isRunning) {
-      clearInterval(handler);
-      handler = null;
       return;
     }
 
@@ -18,9 +17,11 @@ const Stopwatch = () => {
       dispatch({ type: actions.increment });
     }, 1000);
 
-    return () => clearInterval(handler);
-  }, [state.isRunning]);
-
+    return () => {
+      clearInterval(handler);
+      handler = null;
+    };
+  }
   let handler = null;
 
   return (
